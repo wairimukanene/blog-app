@@ -10,3 +10,8 @@ class AddBlog(FlaskForm):
     title = StringField('Title', validators =[Required()])
     content = TextAreaField('Content', validators = [Required()])
     submit = SubmitField('Post Blog')
+    
+class AddBlog(FlaskForm):
+    title = StringField('Title', validators =[Required()])
+    content = TextAreaField('Content', validators = [Required()])
+    submit = SubmitField('Post Blog')
