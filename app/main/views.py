@@ -122,6 +122,37 @@ def new_comment(blog_id):
 
     
     return render_template('add_comment.html', form = form,blog = blog,title=title  )
+  
+  
+  @main.route('/blog/<blog_id>/update', methods = ['GET','POST'])
+
+def updateblog(blog_id):
+    blog = Blog.query.get(blog_id)
+    if blog.user != current_user:
+        abort(403)
+    form = AddBlog()
+    if form.validate_on_submit():
+        blog.title = form.title.data
+        blog.content = form.content.data
+        db.session.commit()
+       
+        return redirect(url_for('main.blogs',id = blog.id)) 
+    if request.method == 'GET':
+        form.title.data = blog.title
+        form.content.data = blog.content
+    return render_template('add_blog.html', form = form)
+
+
+@main.route('/blog/<blog_id>/delete', methods = ['POST'])
+
+def delete_post(blog_id):
+    blog = Blog.query.get(blog_id)
+    if blog.user != current_user:
+        abort(403)
+    db.session.delete(blog)
+    db.session.commit()
+    
+    return redirect(url_for('main.blogs'))    
 
 
 
