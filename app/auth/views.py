@@ -1,26 +1,22 @@
-from flask_wtf import FlaskForm
-from wtforms import StringField,PasswordField,SubmitField,BooleanField
-from wtforms.validators import Required,Email,EqualTo
+from flask import render_template
+from . import auth
+from flask import render_template,redirect,url_for,flash,request
+from .forms import RegistrationForm,LoginForm
+from .. import db
+from flask_login import login_user,logout_user,login_required
 from ..models import User
-from wtforms import ValidationError
+from ..email import mail_message
 
+@auth.route('/login',methods=['GET','POST'])
+def login():
+    login_form = LoginForm()
+    if login_form.validate_on_submit():
+        user = User.query.filter_by(email = login_form.email.data).first()
+        if user is not None and user.verify_password(login_form.password.data):
+            login_user(user)
+            return redirect(request.args.get('next') or url_for('main.loggedin'))
 
-class RegistrationForm(FlaskForm):
-    email = StringField('Your Email Address',validators=[Required(),Email()])
-    username = StringField('Enter your username',validators = [Required()])
-    password = PasswordField('Password',validators = [Required(), EqualTo('password_confirm',message = 'Passwords must match')])
-    password_confirm = PasswordField('Confirm Password',validators = [Required()])
-    submit = SubmitField('Sign Up')
+        flash('Invalid username or Password')
 
-    def validate_email(self,data_field):
-            if User.query.filter_by(email =data_field.data).first():
-                raise ValidationError('There is an account with that email')
-
-    def validate_username(self,data_field):
-        if User.query.filter_by(username = data_field.data).first():
-            raise ValidationError('That username is taken')
-
-class LoginForm(FlaskForm):
-    email = StringField('Your Email Address',validators=[Required(),Email()])
-    password = PasswordField('Password',validators =[Required()])
-    submit = SubmitField('Sign In')        
+    title = "SignIn | Blogger"
+    return render_template('auth/login.html',login_form = login_form,title=title)
