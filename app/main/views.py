@@ -1,7 +1,7 @@
 from flask import render_template,
 from . import main
 from flask_login import login_required,current_user
-from ..models import User
+from ..models import User,Blog
 from .forms import UpdateProfile
 
 
@@ -61,4 +61,16 @@ def update_profile(uname):
         return redirect(url_for('.profile',uname=user.username))
     title = 'Update | Profile'
     return render_template('profile/update.html',form =form, title = title)
+  
+  
+@main.route('/blogs')
+def blogs():
+    title = 'Blogs Added'
+    blogs = Blog.query.order_by(
+        Blog.posted_on.desc())
+
+    
+
+    return render_template('blogs.html',blogs = blogs, title=title)
+
 
