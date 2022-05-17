@@ -72,5 +72,21 @@ def blogs():
     
 
     return render_template('blogs.html',blogs = blogs, title=title)
+  
+  def new_blog():
+    title = 'New | Blog '
+    form = AddBlog()
+    
+    if form.validate_on_submit():
+        blog = Blog(title=form.title.data, content=form.content.data,user=current_user)
+       
+        db.session.add(blog)
+        db.session.commit()
+        
+        return redirect(url_for('main.blogs'))
+        
+    
+    return render_template('add_blog.html',form=form, title = title)
+
 
 
