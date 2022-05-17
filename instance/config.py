@@ -1,2 +1,3 @@
-MOVIE_API_KEY = '<Movie API Key>'
-SECRET_KEY = '<Flask WTF Secret Key>'
+SECRET_KEY = 'wairimu'
+MAIL_USERNAME='mercykanene@gmail.com'
+MAIL_PASSWORD='naivasha2020'
