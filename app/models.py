@@ -9,7 +9,7 @@ from . import login_manager
 def load_user(user_id):
     return User.query.get(int(user_id))
   
-  class User(UserMixin,db.Model):
+class User(UserMixin,db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key = True)
@@ -36,7 +36,7 @@ def load_user(user_id):
     def __repr__(self):
         return f'User{self.username}'
       
-  class Blog(db.Model):
+class Blog(db.Model):
     __tablename__ = 'blogs'
     id = db.Column(db.Integer,primary_key=True)
     title = db.Column(db.String(255),nullable=False)
@@ -45,7 +45,7 @@ def load_user(user_id):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comment = db.relationship('Comment', backref='blog', lazy='dynamic')
     
-      def save(self):
+    def save(self):
         db.session.add(self)
         db.session.commit()
 
@@ -103,10 +103,10 @@ class Quote:
         self.quote = quote
 
 class Subscribers(db.Model):
-     __tablename__ = "subscribers"
-   id = db.Column(db.Integer, primary_key = True)
-   email = db.Column(db.String(255), unique = True, index = True)
-
+    __tablename__ = "subscribers"
+    id = db.Column(db.Integer, primary_key = True)
+    email = db.Column(db.String(255), unique = True, index = True)
+        
     def save_subscriber(self):
         db.session.add(self)
         db.session.commit()

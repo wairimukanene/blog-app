@@ -22,7 +22,7 @@ def index():
     
     title = 'Blogger'
     
-    return render_template('index.html', title = title)
+    return render_template('index.html',title=title)
   
 @main.route('/quotes')
 def quotes():
@@ -30,9 +30,9 @@ def quotes():
     '''
     '''
     quote = get_quote()
-    title = 'Blogger | Quotes'
     
-    return render_template('quotes.html', title = title,quote = quote)
+    
+    return render_template('quotes.html',quote = quote)
   
 @main.route('/loggedin')
 def loggedin():
@@ -80,8 +80,9 @@ def blogs():
     
 
     return render_template('blogs.html',blogs = blogs, title=title)
-  
-  def new_blog():
+
+@main.route('/new_blog',methods =['GET','POST'])
+def new_blog():
     title = 'New | Blog '
     form = AddBlog()
     
@@ -124,8 +125,7 @@ def new_comment(blog_id):
     return render_template('add_comment.html', form = form,blog = blog,title=title  )
   
   
-  @main.route('/blog/<blog_id>/update', methods = ['GET','POST'])
-
+@main.route('/blog/<blog_id>/update', methods = ['GET','POST'])
 def updateblog(blog_id):
     blog = Blog.query.get(blog_id)
     if blog.user != current_user:
@@ -144,7 +144,6 @@ def updateblog(blog_id):
 
 
 @main.route('/blog/<blog_id>/delete', methods = ['POST'])
-
 def delete_post(blog_id):
     blog = Blog.query.get(blog_id)
     if blog.user != current_user:
